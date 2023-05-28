@@ -1,0 +1,64 @@
+
+Given a singly linked list containing N nodes. Modify the Linked list as follows:
+
+1. Modify the value of the first half nodes such that 1st node's new value is equal to the value of the last node minus the first node's current value, 
+2nd node's new value is equal to the second last nodes value minus 2nd nodes current value, likewise for first half nodes.
+2. Replace the second half of nodes with the initial values of the first half nodes(values before modifying the nodes).
+3. If N is odd then the value of the middle node remains unchanged.
+
+/*Easy JAVA Soloution*/
+
+
+
+
+
+class Solution
+{
+    public static Node reverse(Node head){
+        Node curr = head;
+        Node next = null;
+        Node prev = null;
+        
+        while(curr != null){
+            next = curr.next;
+            curr.next = prev;
+            prev = curr;
+            curr = next;
+        }
+        
+        return prev;
+    }
+    
+    public static Node modifyTheList(Node head)
+    {
+        Node slow = head;
+        Node fast = head.next;
+        
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        
+        Node rev = reverse(slow.next);
+        
+        Node head1 = head;
+        Node head2 = rev;
+        slow.next = null;
+        
+        Node temp1 = head1;
+        Node temp2 = head2;
+        
+        while(temp1 != null && temp2 != null){
+            int temp = temp1.data;
+            temp1.data = temp2.data - temp1.data;
+            temp2.data = temp;
+            temp1 = temp1.next;
+            temp2 = temp2.next;
+        }
+        
+        rev = reverse(head2);
+        slow.next = rev;
+        
+        return head1;
+    }
+}
